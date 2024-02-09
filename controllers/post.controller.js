@@ -9,16 +9,15 @@ PostController.create = (req, res) => {
             return res.json(post);
         }
     })
-
 };
 
 PostController.update = (req, res) => {
-    const postId = req.params.id; 
-    PostModel.updatePost(postId, req.body, (err, updatedPost) => {
+    const postId = req.params._id;
+    PostModel.updatePost(req.body, postId, (err, updatedPost) => {
         if (err) {
             return res.status(500).end();
         } else if (!updatedPost) {
-            return res.status(404).json({ error: 'Post not found' });
+            return res.status(404).end();
         } else {
             return res.json(updatedPost);
         }
@@ -26,21 +25,21 @@ PostController.update = (req, res) => {
 };
 
 PostController.findPost = (req, res) => {
-    const postId = req.params.id; 
+    const postId = req.params._id;
 
-    PostModel.getPostById(postId, (err, post) => {
-        if (err) {
+    PostModel.findPostById(postId, (err, post) => {
+        if(err){
             return res.status(500).end();
-        } else if (!postId) {
-            return res.status(404).json({ error: 'Post not found' });
+        } else if(!post){
+            return res.status(404).end();
         } else {
             return res.json(post);
         }
     });
 };
 
-PostController.getAllPosts = (req, res) => {
-    PostModel.getAllPosts((err, post) => {
+PostController.getAllPost = (req, res) => {
+    PostModel.getAllPost({}, (err, post) => {
         if (err) {
             return res.status(500).end();
         } else {

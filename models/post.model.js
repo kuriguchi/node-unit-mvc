@@ -18,8 +18,22 @@ exports.createPost = (obj, next) => {
     }) 
 }
 
-exports.getPostById = (postId, next) => {
+exports.findPostById = (postId, next) => {
     Post.findById(postId, (err, post) => {
         next(err, post);
     });
 };
+
+exports.updatePost = (obj, postId, next) => {
+    const updatedPost = new Post(obj);
+
+    Post.updateOne({_id: postId}, updatedPost, (err, updatedPost) => {
+        next(err, updatedPost);
+    });
+}
+
+exports.getAllPost = (all, next) => {
+    Post.find(all, (err, allPost) => {
+        next(err, allPost);
+    });
+}
